@@ -1186,11 +1186,10 @@ static int resolve_bearer_endpoint(char *arg)
 
 	memcpy(tmp, arg, TIPC_MAX_BEARER_NAME);
 	/*Get the fourth token (remote address)*/
-	delim = strtok(arg, ":");
+	delim = strtok(tmp, ":");
 	for (i = 0; i < 3; i++)
-		delim = strtok(NULL, ":");
-	if (!delim)
-		return 0;
+		if (!(delim = strtok(NULL, ":")))
+			return 0;
 	if (inet_pton(AF_INET, delim, &si_remote.sin_addr))
 		return 0;
 	hints.ai_family = AF_INET;
@@ -1249,6 +1248,7 @@ static void enable_bearer(char *args)
 #endif
 		if (err = get_local_address(a) != 0)
 			fatal("Invalid bearer parameters (%d)\n",err);
+
 		if (err = resolve_bearer_endpoint(a) != 0) {
 			fatal("Could not resolve remote bearer endpoint name (%d)\n", err);
 		}
@@ -1438,7 +1438,7 @@ int main(int argc, char *argv[], char *dummy[])
 	struct command commands[MAX_COMMANDS];
 	int cno, cno2;
 	int c;
-
+	printf("TIPC_MAX_IF_NAME %d\n", TIPC_MAX_IF_NAME);
 	if (argc == 1)
 		fatal("%s",usage);
 
