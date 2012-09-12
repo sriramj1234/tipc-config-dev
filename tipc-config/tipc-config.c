@@ -1438,7 +1438,6 @@ int main(int argc, char *argv[], char *dummy[])
 	struct command commands[MAX_COMMANDS];
 	int cno, cno2;
 	int c;
-	printf("TIPC_MAX_IF_NAME %d\n", TIPC_MAX_IF_NAME);
 	if (argc == 1)
 		fatal("%s",usage);
 
