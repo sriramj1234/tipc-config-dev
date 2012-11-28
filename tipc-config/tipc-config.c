@@ -62,6 +62,8 @@ typedef void (*VOIDFUNCPTR) ();
 #define REPLY_LEN 256
 #define ARGS_SIZE 128
 
+#define  TIPC_CMD_SET_DEVICE     0x800C
+
 /* local variables */
 
 static int verbose = 0;
@@ -1201,6 +1203,33 @@ static void disable_bearerset(char *args)
 	}
 }
 
+static void set_device(char *args)
+{
+	int tlv_space = 0;
+	__u32 attr_val;
+	__u32 attr_val_net;
+
+	if (!*args)
+		return;
+
+	if (!strcmp(args, "enable"))
+		attr_val = 1;
+	else if (!strcmp(args, "disable"))
+		attr_val = 0;
+	else
+		fatal("invalid argumentt\n");
+
+	confirm("%s pseudo device %s? [Y/n]\n",
+	        attr_val ? "enable" : "disable", for_dest());
+
+	attr_val_net = htonl(attr_val);
+	tlv_space = TLV_SET(tlv_area, TIPC_TLV_UNSIGNED,
+	                    &attr_val_net, sizeof(attr_val_net));
+
+	tlv_space = do_command(TIPC_CMD_SET_DEVICE, tlv_area, tlv_space,
+			       tlv_area, sizeof(tlv_area));
+}
+
 
 /******************************************************************************
  *
@@ -1256,6 +1285,7 @@ static char usage[] =
         "        where <depth> = types|names|ports|all\n"
         "  -p                                         Get port info\n"
         "  -s                                         Get TIPC status info\n"
+	"  -ds                                        Enable/disable pseudo device\n"
         "  -v                                         Verbose output\n"
         "  -V                                         Get tipc-config version info\n"
         ; /* end of concatenated string literal */
@@ -1302,6 +1332,7 @@ static struct option options[] = {
 	{"max_publ",     2, 0, OPT_BASE + 18},
 	{"log",          2, 0, OPT_BASE + 19},
 	{"s",            0, 0, OPT_BASE + 20},
+	{"ds",           1, 0, OPT_BASE + 21},
 	{0, 0, 0, 0}
 };
 
@@ -1329,6 +1360,7 @@ void (*cmd_array[])(char *args) = {
 #if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,34))
 	show_stats,
 #endif
+	set_device,
 	NULL
 };
 
