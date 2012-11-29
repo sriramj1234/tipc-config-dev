@@ -1137,7 +1137,7 @@ static int get_local_address(char *arg)
 	}
 	memcpy(tmp, arg, TIPC_MAX_BEARER_NAME);
 
-	delim = strtok(arg + sizeof(MEDIA_NAME_UDP)-1, ":");
+	delim = strtok(tmp + sizeof(MEDIA_NAME_UDP)-1, ":");
 	/*If an IP address was specified, use it directly*/
 	if (inet_pton(AF_INET, delim, &addr))
 		return 0;
@@ -1166,6 +1166,7 @@ static int get_local_address(char *arg)
 	}
 	if (delim = strchr(tmp+sizeof(MEDIA_NAME_UDP), ':')) {
 		sprintf(arg, "%s%s%s\0", MEDIA_NAME_UDP,ifaddr, delim);
+		printf("res: %s%s%s\0", MEDIA_NAME_UDP,ifaddr, delim);
 		goto done;
 	}
 	sprintf(arg, "%s%s\0", MEDIA_NAME_UDP,ifaddr);
@@ -1246,12 +1247,14 @@ static void enable_bearer(char *args)
 #else
 		req_tlv.disc_domain = htonl(domain);
 #endif
+		printf("%s\n",a);
 		if (err = get_local_address(a) != 0)
 			fatal("Invalid bearer parameters (%d)\n",err);
 
 		if (err = resolve_bearer_endpoint(a) != 0) {
 			fatal("Could not resolve remote bearer endpoint name (%d)\n", err);
 		}
+				printf("%s\n",a);
 		strncpy(req_tlv.name, a, TIPC_MAX_BEARER_NAME - 1);
 		req_tlv.name[TIPC_MAX_BEARER_NAME - 1] = '\0';
 
