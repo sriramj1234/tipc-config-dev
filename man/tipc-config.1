@@ -1,0 +1,93 @@
+.TH TIPC-CONFIG 1 "20 Jan 2013"
+.SH NAME 
+tipc-config /- tipc configuration
+.SH SYNOPSIS
+tipc-config command [command ...]
+.SH DESCRIPTION
+/fBcoffee/fP queues a request to the remote
+coffee machine at the device /fB/dev/cf0/fR.
+The required /fIamount/fP argument specifies
+the number of cups, generally between 0 and
+12 on ISO standard coffee machines.
+.SS Options
+.TP
+-addr [=<addr>]
+Get/set node address
+.TP
+-b    [=<bearerpat>]
+Get bearers
+.TP
+-bd    =<bearerpat>
+Disable bearer
+.TP
+-be    =<bearer>[/<domain>[/<priority>]]]  Enable bearer
+.TP
+-dest  =<addr>
+Command destination node
+.TP
+-help
+This usage list
+.TP
+-i
+Interactive set operations
+.TP
+-l    [=<domain>|<linkpat>]
+Get links to domain
+.TP
+-log  [=<size>]
+Dump/resize log
+.TP
+-lp    =<linkpat>|<bearer>|<media>/<value>
+Set link priority
+.TP
+-ls   [=<linkpat>]
+Get link statistics
+.TP
+-lsr   =<linkpat>
+Reset link statistics
+.TP
+-lt    =<linkpat>|<bearer>|<media>/<value>
+Set link tolerance
+.TP
+-lw    =<linkpat>|<bearer>|<media>/<value> 
+Set link window
+.TP
+-m
+Get media
+.TP
+-max_ports    [=<value>]
+Get/set max number of ports
+.TP
+-max_publ     [=<value>]
+Get/set max publications
+.TP
+-max_subscr   [=<value>]
+Get/set max subscriptions
+.TP
+-mng  [=enable|disable]
+Get/set remote management
+.TP
+-n    [=<domain>]
+Get nodes in domain
+.TP
+-netid[=<value>]
+Get/set network id
+.TP
+-nt   [=[<depth>,]<type>[,<low>[,<up>]]]
+Get name table
+where <depth> = types|names|ports|all
+.TP
+-p
+Get port info
+.TP
+-s
+Get TIPC status info
+.TP
+-v
+Verbose output
+.TP
+-V
+Get tipc-config version info
+.SH "SEE ALSO"
+milk(5), sugar(5)
+.SH BUGS
